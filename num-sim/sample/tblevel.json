@@ -1,0 +1,22 @@
+[
+  { "level": 1, "exp_need": 100, "gold_per_tick": 10 },
+  { "level": 2, "exp_need": 125, "gold_per_tick": 12 },
+  { "level": 3, "exp_need": 156, "gold_per_tick": 14 },
+  { "level": 4, "exp_need": 195, "gold_per_tick": 16 },
+  { "level": 5, "exp_need": 244, "gold_per_tick": 18 },
+  { "level": 6, "exp_need": 305, "gold_per_tick": 20 },
+  { "level": 7, "exp_need": 381, "gold_per_tick": 22 },
+  { "level": 8, "exp_need": 477, "gold_per_tick": 24 },
+  { "level": 9, "exp_need": 596, "gold_per_tick": 26 },
+  { "level": 10, "exp_need": 745, "gold_per_tick": 28 },
+  { "level": 11, "exp_need": 931, "gold_per_tick": 30 },
+  { "level": 12, "exp_need": 1164, "gold_per_tick": 32 },
+  { "level": 13, "exp_need": 1455, "gold_per_tick": 34 },
+  { "level": 14, "exp_need": 1819, "gold_per_tick": 36 },
+  { "level": 15, "exp_need": 2274, "gold_per_tick": 38 },
+  { "level": 16, "exp_need": 2842, "gold_per_tick": 40 },
+  { "level": 17, "exp_need": 3553, "gold_per_tick": 42 },
+  { "level": 18, "exp_need": 4441, "gold_per_tick": 44 },
+  { "level": 19, "exp_need": 5551, "gold_per_tick": 46 },
+  { "level": 20, "exp_need": 6939, "gold_per_tick": 48 }
+]
