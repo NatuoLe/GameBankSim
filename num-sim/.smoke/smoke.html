@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><body>
+<script>
+// 预置一张 v3（按名称引用）的旧图，验证启动时自动迁移
+localStorage.clear();
+localStorage.setItem('num-sim.graph.v3', JSON.stringify({ version: 3, nextId: 10, seed: 1, tables: [], nodes: [
+  { id: 'n1', type: 'pool', name: '金币', x: 0, y: 0, init: '10', cap: '' },
+  { id: 'f1', type: 'formula', name: '速度', x: 200, y: 0, expr: '金币*2' },
+  { id: 'a1', type: 'action', name: '产', x: 0, y: -150 },
+], edges: [{ id: 'e1', from: 'a1', to: 'n1', amount: '速度' }] }));
+</script>
+<iframe id="f" src="/index.html" style="width:1400px;height:900px"></iframe>
+<script>
+f.onload = () => {
+  const d = f.contentDocument, s = d.createElement('script');
+  f.contentWindow.__errs = [];
+  f.contentWindow.addEventListener('error', e => f.contentWindow.__errs.push(e.message));
+  f.contentWindow.addEventListener('unhandledrejection', e => f.contentWindow.__errs.push(String(e.reason)));
+  s.type = 'module'; s.src = '/.smoke/t.js'; d.body.appendChild(s);
+};
+</script>

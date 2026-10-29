@@ -51,7 +51,7 @@
 
 ### 3.2 连线
 
-- **资源连线**（实线箭头）：`rate` 为**表达式**，可引用任意 Pool 名称，例如 `金币*0.1`、`基础产出*(1+等级*0.05)`
+- **资源连线**（实线箭头）：`rate` 为**表达式**，变量一律按画布分配的唯一节点 id 引用（资源池 `n*`、公式 `f*`），名称仅作显示，例如 `n1*0.1`、`f1*(1+n4*0.05)`
 - 方向即流向；从 Pool 出发的流量受池内余量限制（`min(rate, value)`）
 
 ### 3.3 表达式
@@ -85,13 +85,38 @@
 
 ## 5. 项目结构
 
+浏览器原生 ES 模块，无构建步骤。分三层，依赖方向单向：`ui → app → core`，core 不依赖 DOM。
+
 ```
 num-sim/
-├── DESIGN.md        ← 本文档
-├── server.js        ← Node 零依赖服务（约 100 行）
-├── start.bat        ← 双击启动（调用受管 Node）
-└── index.html       ← 前端全部（编辑器+引擎+图表，单文件）
+├── DESIGN.md / server.js / start.bat / index.html(仅页面骨架)
+├── css/app.css
+├── js/
+│   ├── main.js              ← 入口：装配各模块、首次加载
+│   ├── examples.js          ← 预置示例图
+│   ├── core/                ← 纯逻辑，可在 Node 中直接运行与测试
+│   │   ├── util.js          ← 数字/主键/随机数等纯函数
+│   │   ├── expr.js          ← 表达式解析器（依赖通过 scope 注入）
+│   │   ├── parse.js         ← json / csv / Luban ##var 源表解析
+│   │   ├── tables.js        ← TableStore：按主键索引的数据表仓库
+│   │   ├── model.js         ← Graph 模型、旧版本迁移
+│   │   ├── validate.js      ← 校验与编译 → V
+│   │   ├── sim.js           ← Simulator：按 tick 结算行为
+│   │   └── edit.js          ← 图编辑操作（只改数据、返回结果）
+│   ├── io/loader.js         ← 经 server.js 读目录/文件、加载 SheetJS
+│   ├── app/
+│   │   ├── state.js         ← 全局状态 S + 事件总线 on/emit
+│   │   └── actions.js       ← 应用操作：调用 core → 持久化 → 发事件
+│   └── ui/                  ← 各自订阅事件，彼此不直接调用渲染
+│       ├── canvas.js  panel.js  chart.js  luban.js  autocomplete.js  toolbar.js  dom.js
+│       ├── ports.js         ← 节点尺寸与端口布局（长方形节点，上入下出；由连线推导：已连 + 1 个空槽）与曲线几何/命中
+│       └── menu.js          ← 通用右键菜单浮层
+└── tests/
+    ├── selftest.mjs         ← core 单元测试：node tests/selftest.mjs
+    └── check-modules.mjs    ← 模块导入/导出与 DOM id 静态检查
 ```
+
+事件：`graph`（图数据变化）、`select`、`panel`、`sim`（模拟结果）、`tables`、`loaded`（整图替换）、`fit`。
 
 ## 6. 编辑器交互（第一版）
 

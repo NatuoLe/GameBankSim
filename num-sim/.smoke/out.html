@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head><body>
+<script>
+// 预置一张 v3（按名称引用）的旧图，验证启动时自动迁移
+localStorage.clear();
+localStorage.setItem('num-sim.graph.v3', JSON.stringify({ version: 3, nextId: 10, seed: 1, tables: [], nodes: [
+  { id: 'n1', type: 'pool', name: '金币', x: 0, y: 0, init: '10', cap: '' },
+  { id: 'f1', type: 'formula', name: '速度', x: 200, y: 0, expr: '金币*2' },
+  { id: 'a1', type: 'action', name: '产', x: 0, y: -150 },
+], edges: [{ id: 'e1', from: 'a1', to: 'n1', amount: '速度' }] }));
+</script>
+<iframe id="f" src="/index.html" style="width:1400px;height:900px"></iframe>
+<script>
+f.onload = () => {
+  const d = f.contentDocument, s = d.createElement('script');
+  f.contentWindow.__errs = [];
+  f.contentWindow.addEventListener('error', e => f.contentWindow.__errs.push(e.message));
+  f.contentWindow.addEventListener('unhandledrejection', e => f.contentWindow.__errs.push(String(e.reason)));
+  s.type = 'module'; s.src = '/.smoke/t.js'; d.body.appendChild(s);
+};
+</script>
+<pre id="result">PASS v3 旧图启动时迁移为 id 引用  n1*2 / f1
+PASS 迁移后无错误  {}
+PASS 已写入 v4 存储
+PASS 示例运行 200 tick 无错误
+PASS 面板显示 id 徽标
+PASS 改名为任意文本（含空格括号）成功
+PASS 引用 f2 的表达式未变
+PASS 改名后结果不变
+PASS 被引用列表  被引用（1）
+PASS 名称重复不再报错
+PASS 按名称搜索出现候选  池n3经验 · ⛓道具表[1003] · = 94
+PASS 选中后插入 id  n3
+PASS id. 补全绑定行字段
+PASS 误用名称：提示使用 id  "金币" 是节点名称，表达式中请用 id 引用：n1 / n2
+PASS tbitem.1002 绑定：id 不变，名称=钻石  n100 钻石
+PASS 字段插入使用 id
+PASS 以行新建货币：init/cap 引用自身 id  n101 n101.init n101.max_stack
+PASS 新货币无错误  {}
+PASS 图例带 id
+PASS 无运行时错误</pre></body></html>
